@@ -1,0 +1,32 @@
+Initial draft of BOM:
+-All part numbers were obtained from Newark.
+
+On board:
+(1)  39-28-1243  Molex 24pin ATX connector
+(1)  CAT24C256LI-G 256k eeprom
+(2)  CCF5510K0FKE36 10k ohm resistor
+(1)  CCF554K75FKE36 4.7k ohm resistor
+(2)  CCF555K62FKE36 5.6k ohm resistor
+(1)  CCF55221RFKE36 221 ohm resistor
+(1)  MC0805B104K500A2.54MM .1uF 50v capacitor
+(3)  22-11-2042 Molex 4 pin connector
+(5)  22-11-2022 Molex 2 pin connector
+(2)  22-11-2032 Molex 3 pin connector
+(2)  M20-9983645  72 way 2 row pin header
+(6)  2212S-08SG-85 8 way 1 row pin socket 
+(3)  SK101M050ST 100uF 50v capacitor
+(1)  0251010.MRT1L 10a pico fuse
+(1)  0251002.MAT1L 2a pico fuse
+(1)  IRLB8743PBF Mosfet
+(1)  1N5953BG zener diode
+
+Not on board but required:
+(5)  22-01-3027  Molex 2 pin female connector
+(3)  22-01-3047  Molex 4 pin female connector
+(2)  22-01-3037  Molex 3 pin female connector
+(25+)  08-50-0113  Molex pins crimp style
+(6)  2211S-08G  8 way 1 row pin header 
+(1)  BB-BBLK-000 REVC Beaglebone black (any rev should work with an SD card)
+(3)  Polulu DRV8825 stepper drivers
+(1)  SPC19807 pack of 25 jumpers
+
