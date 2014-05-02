@@ -1,4 +1,4 @@
-3 axis Interface board for Beaglebone Black
+3 axis Interface board for Beaglebone Black tenatively called StepOneCNC 
 
 Info:
 Designed to support a 3 axis machine with a spindle or engraving head.
