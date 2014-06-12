@@ -1,0 +1,13 @@
+
+This configuration drives a standard 3-axis Milling/Laser/Engraving machine using the PRU for
+high speed step/dir pulse generation and a StepOneCNC driver board.  The
+StepOneCNC configuration is for the a BBB rev.C using the eMMC and HDMI.
+
+There are currently no limit switches configured, so adjust the MIN_LIMIT
+and MAX_LIMIT axis settings in the ini file if your printer has less than
+? inches of X/ ? inches of Y travel.
+
+
+Adjust as required for your machine.  Make scale negative to invert any
+axis that is moving 'backwards'.
+

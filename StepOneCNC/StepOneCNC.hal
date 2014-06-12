@@ -1,0 +1,211 @@
+# #######################################
+#
+# HAL file for StepOneCNC Cape with 3 steppers
+#
+# Derived from example hm2-stepper config
+#
+# ########################################
+
+# Launch the setup script to make sure hardware setup looks good
+loadusr -w ./setup.sh
+
+
+# ###################################
+# Core EMC/HAL Loads
+# ###################################
+
+# kinematics
+loadrt trivkins
+
+# motion controller, get name and thread periods from ini file
+loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[TRAJ]AXES
+
+
+# load low-level drivers
+loadrt hal_bb_gpio output_pins=108,110,112 input_pins=107,109,223,225,227
+loadrt [PRUCONF](DRIVER) prucode=$(LINUXCNC_HOME)/[PRUCONF](PRUBIN) [PRUCONF](CONFIG)
+loadrt limit1 count=1
+
+
+# ################################################
+# THREADS
+# ################################################
+
+addf [PRUCONF](DRIVER).capture-position   servo-thread
+addf bb_gpio.read                         servo-thread
+addf motion-command-handler               servo-thread
+addf motion-controller                    servo-thread
+addf limit1.0                             servo-thread
+addf [PRUCONF](DRIVER).update             servo-thread
+addf bb_gpio.write                        servo-thread
+
+
+# ######################################################
+# Axis-of-motion Specific Configs (not the GUI)
+# ######################################################
+
+
+# ################
+# X [0] Axis
+# ################
+
+# axis enable chain
+newsig emcmot.00.enable bit
+sets emcmot.00.enable FALSE
+net emcmot.00.enable <= axis.0.amp-enable-out 
+net emcmot.00.enable => [PRUCONF](DRIVER).stepgen.00.enable
+
+
+# position command and feedback
+net emcmot.00.pos-cmd <= axis.0.motor-pos-cmd
+net emcmot.00.pos-cmd => [PRUCONF](DRIVER).stepgen.00.position-cmd
+
+net motor.00.pos-fb <= [PRUCONF](DRIVER).stepgen.00.position-fb
+net motor.00.pos-fb => axis.0.motor-pos-fb
+
+
+# timing parameters
+setp [PRUCONF](DRIVER).stepgen.00.dirsetup        [AXIS_0]DIRSETUP
+setp [PRUCONF](DRIVER).stepgen.00.dirhold         [AXIS_0]DIRHOLD
+
+setp [PRUCONF](DRIVER).stepgen.00.steplen         [AXIS_0]STEPLEN
+setp [PRUCONF](DRIVER).stepgen.00.stepspace       [AXIS_0]STEPSPACE
+
+setp [PRUCONF](DRIVER).stepgen.00.position-scale  [AXIS_0]SCALE
+
+setp [PRUCONF](DRIVER).stepgen.00.maxvel          [AXIS_0]STEPGEN_MAX_VEL
+setp [PRUCONF](DRIVER).stepgen.00.maxaccel        [AXIS_0]STEPGEN_MAX_ACC
+
+#setp [PRUCONF](DRIVER).stepgen.00.step_type       0
+# P9.31 PRU1.out2
+setp [PRUCONF](DRIVER).stepgen.00.steppin         142
+# P9.29 PRU1.out4
+setp [PRUCONF](DRIVER).stepgen.00.dirpin          143
+
+
+# ################
+# Y [1] Axis
+# ################
+
+# axis enable chain
+newsig emcmot.01.enable bit
+sets emcmot.01.enable FALSE
+
+net emcmot.01.enable <= axis.1.amp-enable-out 
+net emcmot.01.enable => [PRUCONF](DRIVER).stepgen.01.enable
+
+
+# position command and feedback
+net emcmot.01.pos-cmd <= axis.1.motor-pos-cmd
+net emcmot.01.pos-cmd => [PRUCONF](DRIVER).stepgen.01.position-cmd
+
+net motor.01.pos-fb <= [PRUCONF](DRIVER).stepgen.01.position-fb
+net motor.01.pos-fb => axis.1.motor-pos-fb
+
+
+# timing parameters
+setp [PRUCONF](DRIVER).stepgen.01.dirsetup        [AXIS_1]DIRSETUP
+setp [PRUCONF](DRIVER).stepgen.01.dirhold         [AXIS_1]DIRHOLD
+
+setp [PRUCONF](DRIVER).stepgen.01.steplen         [AXIS_1]STEPLEN
+setp [PRUCONF](DRIVER).stepgen.01.stepspace       [AXIS_1]STEPSPACE
+
+setp [PRUCONF](DRIVER).stepgen.01.position-scale  [AXIS_1]SCALE
+
+setp [PRUCONF](DRIVER).stepgen.01.maxvel          [AXIS_1]STEPGEN_MAX_VEL
+setp [PRUCONF](DRIVER).stepgen.01.maxaccel        [AXIS_1]STEPGEN_MAX_ACC
+
+#setp [PRUCONF](DRIVER).stepgen.01.step_type       0
+# P9.30 PRU1.out5
+setp [PRUCONF](DRIVER).stepgen.01.steppin         144
+# P9.28 PRU1.out6
+setp [PRUCONF](DRIVER).stepgen.01.dirpin          145
+
+
+# ################
+# Z [2] Axis
+# ################
+
+# axis enable chain
+newsig emcmot.02.enable bit
+sets emcmot.02.enable FALSE
+
+net emcmot.02.enable <= axis.2.amp-enable-out 
+net emcmot.02.enable => [PRUCONF](DRIVER).stepgen.02.enable
+
+
+# position command and feedback
+net emcmot.02.pos-cmd <= axis.2.motor-pos-cmd
+net emcmot.02.pos-cmd => [PRUCONF](DRIVER).stepgen.02.position-cmd
+
+net motor.02.pos-fb <= [PRUCONF](DRIVER).stepgen.02.position-fb
+net motor.02.pos-fb => axis.2.motor-pos-fb
+
+
+# timing parameters
+setp [PRUCONF](DRIVER).stepgen.02.dirsetup        [AXIS_2]DIRSETUP
+setp [PRUCONF](DRIVER).stepgen.02.dirhold         [AXIS_2]DIRHOLD
+
+setp [PRUCONF](DRIVER).stepgen.02.steplen         [AXIS_2]STEPLEN
+setp [PRUCONF](DRIVER).stepgen.02.stepspace       [AXIS_2]STEPSPACE
+
+setp [PRUCONF](DRIVER).stepgen.02.position-scale  [AXIS_2]SCALE
+
+setp [PRUCONF](DRIVER).stepgen.02.maxvel          [AXIS_2]STEPGEN_MAX_VEL
+setp [PRUCONF](DRIVER).stepgen.02.maxaccel        [AXIS_2]STEPGEN_MAX_ACC
+
+#setp [PRUCONF](DRIVER).stepgen.02.step_type       0
+# P9.26 PRU1.out8
+setp [PRUCONF](DRIVER).stepgen.02.steppin         46
+# P9.24 PRU1.out9
+setp [PRUCONF](DRIVER).stepgen.02.dirpin          47
+
+
+
+# ##################################################
+# Standard I/O - EStop, Enables, Limit Switches, Etc
+# ##################################################
+
+# Estop Signal 
+net estop_loop bb_gpio.p8.in-07 => iocontrol.0.emc-enable-in
+setp bb_gpio.p8.in-07.invert 1
+
+# Stepper Enable
+net emcmot.00.enable => bb_gpio.p8.out-12
+
+# create signals for tool loading loopback
+net tool-prep-loop iocontrol.0.tool-prepare => iocontrol.0.tool-prepared
+net tool-change-loop iocontrol.0.tool-change => iocontrol.0.tool-changed
+
+# Machine power
+# Use halui.machine.is-on instead?
+net emcmot.00.enable => bb_gpio.p8.out-10
+setp bb_gpio.p8.out-10.invert 1
+
+#Cycle Start Button
+#Should start the currently loaded program (for repeating parts)
+net halui.program.run <= bb_gpio.p8.in-09
+#setp bb_gpio.p8.in-09.invert 1
+
+#Spindle Start
+net spindle-fwd motion.spindle-forward => bb_gpio.p8.out-08
+
+
+
+# ################
+# Limit Switches
+# ################
+net limit-x-min <= bb_gpio.p9.in-23
+net limit-y-min <= bb_gpio.p9.in-25
+net limit-z-min <= bb_gpio.p9.in-27
+
+# Adjust as needed for your switch polarity
+setp bb_gpio.p9.in-23.invert 1
+setp bb_gpio.p9.in-25.invert 1
+setp bb_gpio.p9.in-27.invert 1
+
+# Uncomment if you actually have limit switches setup
+# You probably want to setup homing in the INI file, as well
+net limit-x-min => axis.0.home-sw-in
+net limit-y-min => axis.1.home-sw-in
+net limit-z-min => axis.2.home-sw-in

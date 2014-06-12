@@ -1,17 +1,18 @@
 StepOneCNC I/O list
 
-BB_Input
-P8.7 Estop (98)
-P8.9 Cycle Start(101)
-P9.23 X Home (81)
-P9.25 Y Home (149)
-P9.27 Z Home (147)
+BB_Input (hal_bb_gpio)
+P8.7 Estop (107)
+P8.9 Cycle Start(109)
+P9.23 X Home (223)
+P9.25 Y Home (225)
+P9.27 Z Home (227)
 
-BB_Output
-P8.8 Spindle (99)
-P8.10 PWS_ON (100)
+BB_Output (hal_bb_gpio)
+P8.8 Spindle (108)
+P8.10 PWS_ON (110)
+P8.12 Stepper_EN (112)
 
-Stepper_Outputs
+Stepper_Outputs  (hal_generic_pru)
 P9.31 X_Step (142)
 P9.29 X_Dir (143)
 P9.30 Y_Step (144)
